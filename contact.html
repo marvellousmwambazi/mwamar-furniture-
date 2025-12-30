@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - MWAMAR Furniture</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="contact-page">
+
+    <header class="header">
+        <div class="container nav-container">
+            <h1 class="logo">MWAMAR</h1>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="about.html">About Us</a>
+                <a href="contact.html" class="active">Contact</a>
+            </nav>
+            <div class="cart-icon">🛒 <span class="cart-count">0</span></div>
+            <div class="mobile-menu-toggle">☰</div>
+        </div>
+    </header>
+
+    <div class="contact-container">
+        <div class="contact-header">
+            <h1>Get in <span class="highlight">Touch</span></h1>
+            <p>Ready to transform your space with handcrafted Zambian furniture? We'd love to hear from you.</p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="info-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Our Workshop</h3>
+                    <p>Lusaka, Zambia<br>Crafting Quality Since 2000</p>
+                </div>
+                
+                <div class="info-card">
+                    <i class="fas fa-phone"></i>
+                    <h3>Call Us</h3>
+                    <p>+260 974 738 105<br>Mon - Sat: 8AM - 6PM</p>
+                </div>
+                
+                <div class="info-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email Us</h3>
+                    <p>info@mwamar.com<br>We reply within 24 hours</p>
+                </div>
+                
+                <div class="info-card">
+                    <i class="fas fa-tools"></i>
+                    <h3>Custom Orders</h3>
+                    <p>Bespoke furniture designed<br>just for your space</p>
+                </div>
+            </div>
+
+            <form class="contact-form" id="contactForm">
+                <h2>Send us a Message</h2>
+                <input type="text" name="name" placeholder="Your Full Name" required>
+                <input type="email" name="email" placeholder="Your Email Address" required>
+                <input type="tel" name="phone" placeholder="Your Phone Number">
+                <select name="service" required>
+                    <option value="">Select Service</option>
+                    <option value="furniture-purchase">Furniture Purchase</option>
+                    <option value="custom-order">Custom Order</option>
+                    <option value="repair-service">Repair Service</option>
+                    <option value="consultation">Design Consultation</option>
+                    <option value="other">Other Inquiry</option>
+                </select>
+                <textarea name="message" placeholder="Tell us about your furniture needs, preferred wood type, dimensions, or any specific requirements..." rows="6" required></textarea>
+                <button type="submit" class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 MWAMAR Wooden Furniture - Crafted with Pride in Zambia</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="chatbot.js"></script>
+    <script>
+        // Handle contact form submission
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                service: formData.get('service'),
+                message: formData.get('message')
+            };
+            
+            const submitBtn = this.querySelector('.send-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Thank you! Your message has been sent to mwambazimarvellous@gmail.com');
+                    this.reset(); // Clear the form
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Sorry, there was an error sending your message. Please try again or contact us directly at mwambazimarvellous@gmail.com');
+            }
+            
+            // Restore button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
+    </script>
+</body>
+</html>
